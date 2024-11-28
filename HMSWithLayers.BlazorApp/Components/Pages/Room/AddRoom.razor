@@ -1,0 +1,73 @@
+﻿@page "/addRoom"
+@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IRoomService roomService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h1>Add Room</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="Room">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Room Number:
+            <InputNumber @bind-Value="Model!.RoomNumber" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.RoomNumber)" />
+
+    <div>
+        <label>
+            Room Type Id:
+            <InputNumber @bind-Value="Model!.RoomTypeId" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.RoomTypeId)" />
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private RoomRequestDto? Model { get; set; } = new RoomRequestDto();
+    private string errorMessage;
+
+    protected override void OnInitialized() =>
+        Model ??= new() { Availability = true };
+
+
+    /// <summary>
+    /// Submits the form data to add a new room and navigates to the room types page upon success.
+    /// </summary>
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result result = await roomService.AddRoomAsync(Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/roomTypes");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+}

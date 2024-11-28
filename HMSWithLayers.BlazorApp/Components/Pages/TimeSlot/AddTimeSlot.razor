@@ -1,0 +1,72 @@
+﻿@page "/addtimeslot"
+@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.ITimeSlotService timeSlotService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<h3>AddTimeSlot</h3>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="TimeSlot">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Start Time:
+           <input type="time" @bind="@Model!.StartTime"  />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.StartTime)" />
+    <div>
+        <label>
+            End Time:
+            <input type="time" @bind="@Model!.EndTime"  />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.EndTime)" />
+    <div>
+        <label>
+            Day:
+            <InputText @bind-Value="Model!.Day" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Day)" />
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+        </EditForm>
+@code {
+    [SupplyParameterFromForm]
+    private TimeSlotRequestDto? Model { get; set; } = new TimeSlotRequestDto();
+    private string errorMessage;
+  
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result result = await timeSlotService.AddTimeSlotAsync(Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/timeslot");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/timeslot"); // Redirect to time Slot page without adding a time slot
+    }
+}

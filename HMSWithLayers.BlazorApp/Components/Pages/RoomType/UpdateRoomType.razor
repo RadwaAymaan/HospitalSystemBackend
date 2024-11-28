@@ -1,0 +1,87 @@
+﻿@page "/updateRoomType/{id:int}"
+@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IRoomTypeService roomTypeService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h1>Update Room Type</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="RoomType">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Type:
+            <InputText @bind-Value="Model!.Type" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Type)" />
+
+    <div>
+        <label>
+            Number of Patients:
+            <InputNumber @bind-Value="Model!.NumberOfPatient" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.NumberOfPatient)" />
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private RoomTypeRequestDto? Model { get; set; } = new RoomTypeRequestDto();
+    private string errorMessage;
+
+    /// <summary>
+    /// Initializes the component asynchronously, retrieving the details of the room type with the specified ID from the server.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await roomTypeService.GetRoomTypeByIdAsync(Id);
+
+        if (result.IsSuccess)
+        {
+            RoomTypeResponseDto roomType = result.Value;
+            Model.Type = roomType.Type;
+            Model.NumberOfPatient = roomType.NumberOfPatient;
+        }
+    }
+
+    /// <summary>
+    /// Submits the form data to update the room type and navigates to the room types page upon success.
+    /// </summary>
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result<RoomTypeResponseDto> result = await roomTypeService.UpdateRoomTypeAsync(Id, Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/roomTypes");
+            }
+            else
+            {
+                errorMessage = "An error occurred";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+}

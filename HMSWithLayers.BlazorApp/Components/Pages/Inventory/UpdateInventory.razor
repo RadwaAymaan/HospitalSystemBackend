@@ -1,0 +1,96 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IInventoryService inventoryService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/updateinventory/{id:int}"
+
+<h1>UpdateInventory</h1>
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+     </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="Inventory">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Name:
+            <InputText @bind-Value="Model!.InventoryName" />
+        </label>
+    </div>
+        <ValidationMessage For="@(() => Model!.InventoryName)" />
+    <div>
+        <label>
+            Location:
+            <InputText @bind-Value="Model!.InventoryLocation" />
+        </label>
+    </div>
+        <ValidationMessage For="@(() => Model!.InventoryLocation)" />
+
+    <div>
+        <label>
+            Capacity:
+            <InputNumber @bind-Value="Model!.InventoryCapacity "/>
+        </label>
+    </div>
+        <ValidationMessage For="@(() => Model!.InventoryCapacity)" />
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [SupplyParameterFromForm]
+    private InventoryRequestDto? Model { get; set; } = new InventoryRequestDto();
+    private string errorMessage;
+
+    /// <summary>
+    /// Method invoked when the component is initialized asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await inventoryService.GetInventoryByIdAsync(Id);
+
+        if (result.IsSuccess)
+        {
+            InventoryResponseDto item = result.Value;
+            Model.InventoryName = item.InventoryName;
+            Model.InventoryLocation = item.InventoryLocation;
+            Model.InventoryCapacity = item.InventoryCapacity;
+        }
+    }
+
+    /// <summary>
+    /// Submits the form data for updating specialization information.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result<InventoryResponseDto> result = await inventoryService.UpdateInventoryAsync(Id, Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/inventory");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+
+}

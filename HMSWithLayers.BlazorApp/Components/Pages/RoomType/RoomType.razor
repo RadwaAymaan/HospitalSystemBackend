@@ -1,0 +1,83 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IRoomTypeService roomTypeService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/roomTypes"
+
+
+
+<h1>Room Types</h1>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Number of patient</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items.Value)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Type</td>
+                    <td>@item.NumberOfPatient</td>
+                    <td><button @onclick="@(() => NavigateToUpdateRoomType(item.Id))">Update</button></td>
+                    <td><button @onclick="@(async () => await OnDelete(item.Id))">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="nav-item w-auto d-flex align-items-end justify-content-end">
+        <NavLink class="nav-link btn btn-primary fw-bold text-light " href="addRoomType">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Room Type
+        </NavLink>
+    </div>
+}
+
+@code {
+    private Result<List<RoomTypeResponseDto>> items;
+
+    /// <summary>
+    /// Initializes the component asynchronously, loading all room types from the server.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        items = await roomTypeService.GetAllRoomTypesAsync();
+    }
+
+    /// <summary>
+    /// Deletes a room type with the specified ID asynchronously.
+    /// </summary>
+    /// <param name="id">The ID of the room type to delete.</param>
+    private async Task OnDelete(int id)
+    {
+        await roomTypeService.DeleteRoomTypeAsync(id);
+        await RefreshItems();
+    }
+
+    /// <summary>
+    /// Refreshes the list of room types by loading them from the server asynchronously.
+    /// </summary>
+    private async Task RefreshItems()
+    {
+        items = await roomTypeService.GetAllRoomTypesAsync();
+    }
+
+    /// <summary>
+    /// Navigates to the page for updating a room type with the specified ID.
+    /// </summary>
+    /// <param name="id">The ID of the room type to update.</param>
+    private void NavigateToUpdateRoomType(int id)
+    {
+        navigationManager.NavigateTo($"/updateRoomType/{id}");
+    }
+}

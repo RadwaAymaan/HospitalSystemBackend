@@ -1,0 +1,86 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.ISpecializationService specializationService
+@page "/specialization"
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Specialization</PageTitle>
+  
+<h1>Specialization</h1>
+
+@if (specializations == null)
+{
+	<p>Loading</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Update</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach (var item in specializations.Value)
+		{
+			 <tr>
+			   <td>@item.Id</td>
+			   <td>@item.SpecializationName</td>
+					   <td><button @onclick="@(() => NavigateToUpdateSpecialization(item.Id))">Update</button></td>
+			   <td><button @onclick="@(async () => await OnDelete(item.Id))">Delete</button></td>
+			 </tr>
+		}
+			</tbody>
+	</table>
+			 <div class="nav-item w-auto d-flex align-items-end justify-content-end">
+			<NavLink class="nav-link btn btn-primary fw-bold text-light " href="addSpecialization">
+			<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Specialization
+		</NavLink>
+	</div>
+}
+
+@code {
+	private Result<List<SpecializationResponseDto>> specializations;
+
+	/// <summary>
+	/// Method invoked when the component is initialized asynchronously.
+	/// </summary>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	protected override async Task OnInitializedAsync()
+	{
+		specializations = await specializationService.GetAllSpecializationsAsync();
+	}
+
+	/// <summary>
+	/// Method invoked when deleting a specialization item.
+	/// </summary>
+	/// <param name="id">The ID of the specialization item to delete.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	private async Task OnDelete(int id)
+	{
+		await specializationService.DeleteSpecializationAsync(id);
+		await RefreshItems();
+	}
+
+	/// <summary>
+	/// Refreshes the list of specialization items.
+	/// </summary>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	private async Task RefreshItems()
+	{
+		specializations = await specializationService.GetAllSpecializationsAsync();
+	}
+
+	/// <summary>
+	/// Navigates to the update specialization page for a specific specialization item.
+	/// </summary>
+	/// <param name="id">The ID of the specialization item to update.</param>
+	private void NavigateToUpdateSpecialization(int id)
+	{
+		navigationManager.NavigateTo($"/updatespecialization/{id}");
+	}
+}

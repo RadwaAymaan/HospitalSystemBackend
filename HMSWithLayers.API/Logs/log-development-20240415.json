@@ -1,0 +1,12 @@
+2024-04-15 08:43:16 [WRN] [Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware] []  Failed to determine the https port for redirect.
+    
+2024-04-15 08:43:16 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] []  HTTP GET /swagger/index.html responded 404 in 100.7615 ms
+    
+2024-04-15 08:43:16 [INF] [HMSWithLayers.API.Middlware.AuditLogMiddleware] []  Request:- Host:localhost:5024,Path:/swagger/index.html,
+ Controller Name:,
+ Client IP: ::1 at 15-Apr-24 6:43:16 AM +00:00
+    
+2024-04-15 08:43:16 [INF] [HMSWithLayers.API.Middlware.AuditLogMiddleware] []  Response: 404 at: 15-Apr-24 6:43:16 AM +00:00
+    
+2024-04-15 08:43:16 [INF] [HMSWithLayers.API.Middlware.AuditLogMiddleware] []  Response Body: 
+    

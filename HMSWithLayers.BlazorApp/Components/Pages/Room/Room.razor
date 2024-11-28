@@ -1,0 +1,85 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IRoomService roomService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/rooms"
+
+
+
+<h1>Rooms</h1>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Room Number</th>
+                <th>Room Type</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items.Value)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.RoomNumber</td>
+                    <td>@item.RoomType.Type</td>
+                    <td>@item.Availability</td>
+                    <td><button @onclick="@(() => NavigateToUpdateRoom(item.Id))">Update</button></td>
+                    <td><button @onclick="@(async () => await OnDelete(item.Id))">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="nav-item w-auto d-flex align-items-end justify-content-end">
+        <NavLink class="nav-link btn btn-primary fw-bold text-light " href="addRoom">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Room
+        </NavLink>
+    </div>
+}
+
+@code {
+    private Result<List<RoomGetAllResponseDto>> items;
+
+    /// <summary>
+    /// Initializes the component asynchronously, loading all rooms from the server.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        items = await roomService.GetAllRoomsAsync();
+    }
+
+    /// <summary>
+    /// Deletes a room with the specified ID asynchronously.
+    /// </summary>
+    /// <param name="id">The ID of the room to delete.</param>
+    private async Task OnDelete(int id)
+    {
+        await roomService.DeleteRoomAsync(id);
+        await RefreshItems();
+    }
+
+    /// <summary>
+    /// Refreshes the list of rooms by loading them from the server asynchronously.
+    /// </summary>
+    private async Task RefreshItems()
+    {
+        items = await roomService.GetAllRoomsAsync();
+    }
+
+    /// <summary>
+    /// Navigates to the page for updating a room with the specified ID.
+    /// </summary>
+    /// <param name="id">The ID of the room to update.</param>
+    private void NavigateToUpdateRoom(int id)
+    {
+        navigationManager.NavigateTo($"/updateRoom/{id}");
+    }
+}

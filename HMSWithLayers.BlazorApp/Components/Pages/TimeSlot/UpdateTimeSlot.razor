@@ -1,0 +1,90 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.ITimeSlotService timeSlotService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/updatetimeslot/{id:int}"
+
+<h1>Update TimeSlot</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="TimeSlot">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Start Time:
+            <input type="time" @bind="@Model!.StartTime" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.StartTime)" />
+    <div>
+        <label>
+            End Time:
+            <input type="time" @bind="@Model!.EndTime" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.EndTime)" />
+    <div>
+        <label>
+            Day:
+            <InputText @bind-Value="Model!.Day" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Day)" />
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private TimeSlotRequestDto? Model { get; set; } = new TimeSlotRequestDto();
+
+    private string errorMessage;
+
+    private Result<TimeSlotResponseDto> TimeSlot;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await timeSlotService.GetTimeSlotByIdAsync(Id);
+
+        if(result.IsSuccess)
+        {
+            TimeSlotResponseDto TimeSlot = result.Value;
+            Model.StartTime = TimeSlot.StartTime;
+            Model.EndTime = TimeSlot.EndTime;
+            Model.Day = TimeSlot.Day;
+        }
+    }
+
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result<TimeSlotResponseDto> result = await timeSlotService.UpdateTimeSlotAsync(Id, Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/timeslot");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+}

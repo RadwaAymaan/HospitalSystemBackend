@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.API", "HMSWithLayers.API\HMSWithLayers.API.csproj", "{8435F648-AE5A-4609-AA56-15F1C8CF7FF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Domain", "HMSWithLayers.Domain\HMSWithLayers.Domain.csproj", "{B7660381-15E5-479C-8E6C-30245BC0E53A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Application", "HMSWithLayers.Application\HMSWithLayers.Application.csproj", "{5C4E76CA-C199-4243-8DD8-25715659DF06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Infrastructure", "HMSWithLayers.Infrastructure\HMSWithLayers.Infrastructure.csproj", "{60337DFB-70BB-4A9F-AC16-D18F7771B575}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Core", "HMSWithLayers.Core\HMSWithLayers.Core.csproj", "{E143A68B-45FF-45FA-A359-66F92B99B8D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Test", "HMSWithLayers.Test\HMSWithLayers.Test.csproj", "{FC08A440-857C-4C36-A47A-F1D4BF4B86FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Infrastructure.Sql", "HMSWithLayers.Infrastructure.Sql\HMSWithLayers.Infrastructure.Sql.csproj", "{35E0394F-2A38-4977-AC62-76D77F52810C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Infrastructure.MySql", "HMSWithLayers.Infrastructure.MySql\HMSWithLayers.Infrastructure.MySql.csproj", "{63D44EAC-4426-4FD9-AADF-575551A014E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.Infrastructure.Postgresql", "HMSWithLayers.Infrastructure.Postgresql\HMSWithLayers.Infrastructure.Postgresql.csproj", "{48A99161-A9C9-4B09-B14E-C3CBDC0C879C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSWithLayers.BlazorApp", "HMSWithLayers.BlazorApp\HMSWithLayers.BlazorApp.csproj", "{65E4BB3A-82A7-45A4-8ACD-544A0B4EB395}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8435F648-AE5A-4609-AA56-15F1C8CF7FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8435F648-AE5A-4609-AA56-15F1C8CF7FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8435F648-AE5A-4609-AA56-15F1C8CF7FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8435F648-AE5A-4609-AA56-15F1C8CF7FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7660381-15E5-479C-8E6C-30245BC0E53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7660381-15E5-479C-8E6C-30245BC0E53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7660381-15E5-479C-8E6C-30245BC0E53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7660381-15E5-479C-8E6C-30245BC0E53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C4E76CA-C199-4243-8DD8-25715659DF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C4E76CA-C199-4243-8DD8-25715659DF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C4E76CA-C199-4243-8DD8-25715659DF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C4E76CA-C199-4243-8DD8-25715659DF06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60337DFB-70BB-4A9F-AC16-D18F7771B575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60337DFB-70BB-4A9F-AC16-D18F7771B575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60337DFB-70BB-4A9F-AC16-D18F7771B575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60337DFB-70BB-4A9F-AC16-D18F7771B575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E143A68B-45FF-45FA-A359-66F92B99B8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E143A68B-45FF-45FA-A359-66F92B99B8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E143A68B-45FF-45FA-A359-66F92B99B8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E143A68B-45FF-45FA-A359-66F92B99B8D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC08A440-857C-4C36-A47A-F1D4BF4B86FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC08A440-857C-4C36-A47A-F1D4BF4B86FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC08A440-857C-4C36-A47A-F1D4BF4B86FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC08A440-857C-4C36-A47A-F1D4BF4B86FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E0394F-2A38-4977-AC62-76D77F52810C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E0394F-2A38-4977-AC62-76D77F52810C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E0394F-2A38-4977-AC62-76D77F52810C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E0394F-2A38-4977-AC62-76D77F52810C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63D44EAC-4426-4FD9-AADF-575551A014E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63D44EAC-4426-4FD9-AADF-575551A014E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63D44EAC-4426-4FD9-AADF-575551A014E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63D44EAC-4426-4FD9-AADF-575551A014E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A99161-A9C9-4B09-B14E-C3CBDC0C879C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A99161-A9C9-4B09-B14E-C3CBDC0C879C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A99161-A9C9-4B09-B14E-C3CBDC0C879C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A99161-A9C9-4B09-B14E-C3CBDC0C879C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65E4BB3A-82A7-45A4-8ACD-544A0B4EB395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E4BB3A-82A7-45A4-8ACD-544A0B4EB395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E4BB3A-82A7-45A4-8ACD-544A0B4EB395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E4BB3A-82A7-45A4-8ACD-544A0B4EB395}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6B706DA-72AB-4611-B0B2-FA8A774922C3}
+	EndGlobalSection
+EndGlobal

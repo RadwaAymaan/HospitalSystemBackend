@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Hangfire" Version="1.8.12" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HMSWithLayers.Core\HMSWithLayers.Core.csproj" />
+    <ProjectReference Include="..\HMSWithLayers.Infrastructure.MySql\HMSWithLayers.Infrastructure.MySql.csproj" />
+    <ProjectReference Include="..\HMSWithLayers.Infrastructure.Postgresql\HMSWithLayers.Infrastructure.Postgresql.csproj" />
+    <ProjectReference Include="..\HMSWithLayers.Infrastructure.Sql\HMSWithLayers.Infrastructure.Sql.csproj" />
+    <ProjectReference Include="..\HMSWithLayers.Infrastructure\HMSWithLayers.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

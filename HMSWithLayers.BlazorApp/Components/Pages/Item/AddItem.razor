@@ -1,0 +1,95 @@
+﻿@page "/addItem"
+@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IItemService itemService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h1>Add Item</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="Item">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Price:
+            <InputNumber @bind-Value="Model!.Price" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Price)" />
+
+    <div>
+        <label>
+            Category ID:
+            <InputNumber @bind-Value="Model!.CategoryId" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.CategoryId)" />
+
+    <div>
+        <label>
+            Name:
+            <InputText @bind-Value="Model!.Name" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Name)" />
+
+    <div>
+        <label>
+            Description:
+            <InputText @bind-Value="Model!.Description" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Description)" />
+
+    <div>
+        <label>
+            Stock:
+            <InputNumber @bind-Value="Model!.Stock" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.Stock)" />
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private ItemRequestDto? Model { get; set; } = new ItemRequestDto();
+    private string errorMessage;
+
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result result = await itemService.AddItemAsync(Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/items");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/roomTypes"); // Redirect to roomTypes page without adding a room type
+    }
+}

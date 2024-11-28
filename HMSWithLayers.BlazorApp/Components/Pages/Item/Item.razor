@@ -1,0 +1,77 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IItemService itemService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/items"
+
+
+
+<h1>Items</h1>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="nav-item px-3">
+        <NavLink class="nav-link" href="addItem">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> AddItem
+        </NavLink>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category Name</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items.Value)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>@item.Stock</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td><button @onclick="@(() => NavigateToUpdateItem(item.Id))">Update</button></td>
+                    <td><button @onclick="@(async () => await OnDelete(item.Id))">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Result<List<ItemResponseDto>> items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await itemService.GetAllItemsAsync();
+    }
+
+    private async Task OnDelete(int id)
+    {
+        await itemService.DeleteItemAsync(id);
+        await RefreshItems();
+    }
+
+    private async Task RefreshItems()
+    {
+        items = await itemService.GetAllItemsAsync();
+    }
+
+    private void NavigateToUpdateItem(int id)
+    {
+        navigationManager.NavigateTo($"/updateitem/{id}");
+    }
+}

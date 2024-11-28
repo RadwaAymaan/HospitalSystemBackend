@@ -1,0 +1,80 @@
+﻿@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.ISpecializationService specializationService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@page "/updatespecialization/{id:int}"
+
+<h1>UpdateSpecialization</h1>
+@if (errorMessage != null)
+{
+        <div class="alert alert-danger" role="alert">
+        @errorMessage
+        </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="Spectialization">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Name:
+            <InputText @bind-Value="Model!.SpecializationName" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.SpecializationName)" />
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [SupplyParameterFromForm]
+    private SpecializationRequestDto? Model { get; set; } = new SpecializationRequestDto();
+    private string errorMessage;
+
+    /// <summary>
+    /// Method invoked when the component is initialized asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await specializationService.GetSpecializationByIdAsync(Id);
+
+        if (result.IsSuccess)
+        {
+            SpecializationResponseDto item = result.Value;
+            Model.SpecializationName = item.SpecializationName;
+
+        }
+    }
+
+    /// <summary>
+    /// Submits the form data for updating specialization information.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result<SpecializationResponseDto> result = await specializationService.UpdateSpecializationAsycn(Id, Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/specialization");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+
+
+}

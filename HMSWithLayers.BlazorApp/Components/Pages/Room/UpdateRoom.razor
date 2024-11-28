@@ -1,0 +1,88 @@
+﻿@page "/updateRoom/{id:int}"
+@using HMSWithLayers.Core.Result
+@using HMSWithLayers.Application.DTOS
+@inject HMSWithLayers.Application.Contracts.IRoomService roomService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h1>Update Room</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<EditForm Model="Model" OnValidSubmit="SubmitForm" FormName="Room">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>
+            Room Number:
+            <InputNumber @bind-Value="Model!.RoomNumber" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.RoomNumber)" />
+
+    <div>
+        <label>
+            Room Type Id:
+            <InputNumber @bind-Value="Model!.RoomTypeId" />
+        </label>
+    </div>
+    <ValidationMessage For="@(() => Model!.RoomTypeId)" />
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private RoomRequestDto? Model { get; set; } = new RoomRequestDto();
+    private string errorMessage;
+
+    /// <summary>
+    /// Initializes the component asynchronously, retrieving the details of the room with the specified ID from the server.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await roomService.GetRoomByIdAsync(Id);
+
+        if (result.IsSuccess)
+        {
+            RoomResponseDto room = result.Value;
+            Model.RoomNumber = room.RoomNumber;
+            Model.Availability = room.Availability;
+            Model.RoomTypeId = room.RoomType.Id;
+        }
+    }
+
+    /// <summary>
+    /// Submits the form data to update the room and navigates to the rooms page upon success.
+    /// </summary>
+    private async Task SubmitForm()
+    {
+        try
+        {
+            Result<RoomResponseDto> result = await roomService.UpdateRoomAsycn(Id, Model);
+            if (result.IsSuccess)
+            {
+                errorMessage = null;
+                navigationManager.NavigateTo("/rooms");
+            }
+            else
+            {
+                errorMessage = "An error occurred"; // Display error message to the user
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred: " + ex.Message;
+        }
+    }
+}
